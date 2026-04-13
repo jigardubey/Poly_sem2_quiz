@@ -584,6 +584,7 @@ if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 
 # --- UI ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
+st.caption("Created by: Jigar Dubey")
 
 # Subject Selection
 subs = list(set([x[0] for x in st.session_state.db]))
