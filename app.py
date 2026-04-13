@@ -629,14 +629,28 @@ if st.session_state.quiz_data:
         
     st.session_state.current_q += 1
     st.rerun()
-
-    else:st.balloons()
-        # len(q_list) ko badal kar len(st.session_state.quiz_data) kar diya
-        st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(st.session_state.quiz_data)}")
+        else:
+        st.balloons()
+        # Yahan humne st.session_state.quiz_data use kiya hai taaki error na aaye
+        total_questions = len(st.session_state.quiz_data)
+        score = st.session_state.score
         
-        if st.button("Restart"):
+        st.write("---")
+        st.write(f"## 🎉 Quiz Khatam!")
+        st.write(f"### Tera Final Score: **{score} / {total_questions}**")
+        
+        # Performance message
+        if score == total_questions:
+            st.success("Topper ho bhai tum toh! 🏆")
+        elif score > total_questions / 2:
+            st.info("Achha kiya! Thodi aur mehnat aur phir topper! 💪")
+        else:
+            st.warning("Thoda aur padhna padega dost! 📚")
+
+        if st.button("Restart Quiz"):
+            # Sab kuch reset kar rahe hain
             st.session_state.quiz_data = []
-            st.session_state.current_q = 0 # Score aur current question bhi reset kar dena sahi rehta hai
+            st.session_state.current_q = 0
             st.session_state.score = 0
             st.rerun()
             
