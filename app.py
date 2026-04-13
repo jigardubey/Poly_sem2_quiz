@@ -630,10 +630,14 @@ if st.session_state.quiz_data:
     st.session_state.current_q += 1
     st.rerun()
 
-else:
+    else:
         st.balloons()
-        st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(q_list)}")
+        # len(q_list) ko badal kar len(st.session_state.quiz_data) kar diya
+        st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(st.session_state.quiz_data)}")
+        
         if st.button("Restart"):
             st.session_state.quiz_data = []
+            st.session_state.current_q = 0 # Score aur current question bhi reset kar dena sahi rehta hai
+            st.session_state.score = 0
             st.rerun()
-          
+            
