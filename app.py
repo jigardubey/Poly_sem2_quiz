@@ -582,76 +582,66 @@ if 'score' not in st.session_state: st.session_state.score = 0
 if 'current_q' not in st.session_state: st.session_state.current_q = 0
 if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 
-# --- UI ---
+# --- BRANDING ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
 
-# Subject Selection
-subs = list(set([x[0] for x in st.session_state.db]))
-selected_sub = st.selectbox("Apna Subject Chuniye:", subs)
-
-if st.button("Start Quiz"):
-    st.session_state.quiz_data = [x for x in st.session_state.db if x[0] == selected_sub]
-    random.shuffle(st.session_state.quiz_data)
-    st.session_state.score = 0
-    st.session_state.current_q = 0
-    st.rerun()
-
-# Quiz Logic
-if st.session_state.quiz_data:
+if not st.session_state.quiz_started:
+    # Subject selection screen
+    subs = list(set([x[0] for x in st.session_state.db]))
+    selected_sub = st.selectbox("Apna Subject Chuniye:", subs)
+    
+    if st.button("🚀 Start Quiz"):
+        st.session_state.quiz_data = [x for x in st.session_state.db if x[0] == selected_sub]
+        random.shuffle(st.session_state.quiz_data)
+        st.session_state.score = 0
+        st.session_state.current_q = 0
+        st.session_state.quiz_started = True
+        st.rerun()
+else:
+    # Quiz Logic
     q_list = st.session_state.quiz_data
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
-        st.write(f"### Question {st.session_state.current_q + 1}")
-        st.info(curr[2])
         
-        options = curr[4].split(',')
-        ans = st.radio("Sahi jawab chuniye:", options)
+        # Sawal number aur progress bar
+        st.write(f"**Sawal {st.session_state.current_q + 1} of {len(q_list)}**")
+        st.progress((st.session_state.current_q + 1) / len(q_list))
+        
+        st.info(curr[2]) # Sawal dikhana
+        
+        # Options ko saaf karke dikhana
+        options_raw = curr[4].split(',')
+        options = [opt.strip() for opt in options_raw if opt.strip()]
+        user_ans = st.radio("Sahi option chuniye:", options, key=f"q_{st.session_state.current_q}")
         
         if st.button("Submit Answer"):
-            # Dono answers ko clean karke check karte hain
-            if ans.strip() == curr[3].strip():
-                st.success(f"✅ **Sahi Jawab!**")
-                st.balloons() # Thodi party (optional, maza aata hai)
+            if user_ans.strip() == curr[3].strip():
+                st.success("✅ **Sahi Jawab!**")
+                st.balloons() # Sahi hone par celebration
                 st.session_state.score += 1
             else:
-                st.error(f"❌ **Galat Jawab!**")
-                # Ye line saaf-saaf sahi jawab dikhayegi
-                st.info(f"💡 Sahi uttar tha: **{curr[3]}**")
+                st.error("❌ **Galat Jawab!**")
+                st.info(f"💡 Sahi uttar tha: **{curr[3]}**") # Galat hone par sahi jawab batana
             
-            # 3 second ka wait taaki banda aram se padh sake
-            time.sleep(3) 
-            
-            # Agle sawal par bhejo
+            # 2 second rukega taaki banda result dekh sake
+            time.sleep(2)
             st.session_state.current_q += 1
             st.rerun()
-            
-        
-    st.session_state.current_q += 1
-    st.rerun()
-    
     else:
+        # Result Screen
         st.balloons()
-        # Yahan humne st.session_state.quiz_data use kiya hai taaki error na aaye
-        total_questions = len(st.session_state.quiz_data)
-        score = st.session_state.score
+        st.header(f"🏁 Quiz Result: {st.session_state.score}/{len(q_list)}")
         
-        st.write("---")
-        st.write(f"## 🎉 Quiz Khatam!")
-        st.write(f"### Tera Final Score: **{score} / {total_questions}**")
-        
-        # Performance message
-        if score == total_questions:
-            st.success("Topper ho bhai tum toh! 🏆")
-        elif score > total_questions / 2:
-            st.info("Achha kiya! Thodi aur mehnat aur phir topper! 💪")
+        # Performance message based on score
+        if st.session_state.score == len(q_list):
+            st.success("Kya baat hai! Tum toh genius ho! 🏆")
+        elif st.session_state.score > len(q_list) / 2:
+            st.info("Bohot badhiya! Thodi aur mehnat karo. 💪")
         else:
-            st.warning("Thoda aur padhna padega dost! 📚")
+            st.warning("Koi baat nahi, dobara koshish karo! 📚")
 
-        if st.button("Restart Quiz"):
-            # Sab kuch reset kar rahe hain
+        if st.button("Main Menu par wapas jayein"):
+            st.session_state.quiz_started = False
             st.session_state.quiz_data = []
-            st.session_state.current_q = 0
-            st.session_state.score = 0
             st.rerun()
-            
