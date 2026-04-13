@@ -468,7 +468,6 @@ if 'db' not in st.session_state:
 ["Applied Mechanics", "Unit 5", "Rate of change of momentum?", "Force", "Work,Force,Power,Energy"],
 ["Applied Mechanics", "Unit 5", "Work-Energy principle kya hai?", "Work = Change in KE", "Work = Force,Work = Change in KE,Work = PE,None"],
 ["Applied Mechanics", "Unit 5", "Power ki practical unit?", "Horse Power (HP)", "Watt,Joule,Horse Power (HP),None"],
-    ]
 ["Applied Mechanics", "Unit 5", "1 HP in Watts?", "746 W", "700 W,746 W,1000 W,None"],
 ["Applied Mechanics", "Unit 5", "Energy kaisa quantity hai?", "Scalar", "Vector,Scalar,Tensor,None"],
 ["Applied Mechanics", "Unit 5", "Joule kiska unit hai?", "Work and Energy", "Force,Power,Work and Energy,None"],
@@ -577,7 +576,7 @@ if 'db' not in st.session_state:
 ["Environmental", "Unit 2", "Aerosols kahan paye jate hain?", "Air", "Water,Air,Food,None"],
 ["Environmental", "Unit 3", "Pellets kisse bante hain?", "Biomass", "Coal,Biomass,Iron,None"],
 ["Environmental", "Unit 4", "Green data book kiske liye hai?", "Environmental data", "Endangered species,Environmental data,Animals,None"]
-
+    ]
 # --- SESSION STATE (App ki yaadgaar) ---
 if 'score' not in st.session_state: st.session_state.score = 0
 if 'current_q' not in st.session_state: st.session_state.current_q = 0
