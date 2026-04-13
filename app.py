@@ -630,8 +630,7 @@ if st.session_state.quiz_data:
     st.session_state.current_q += 1
     st.rerun()
 
-    else:
-        st.balloons()
+    else:st.balloons()
         # len(q_list) ko badal kar len(st.session_state.quiz_data) kar diya
         st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(st.session_state.quiz_data)}")
         
