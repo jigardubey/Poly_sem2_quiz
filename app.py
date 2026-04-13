@@ -669,7 +669,30 @@ else:
             st.info("Bohot badhiya! Thodi aur mehnat karo. 💪")
         else:
             st.warning("Koi baat nahi, dobara koshish karo! 📚")
+        # --- LEADERBOARD ---
+        st.divider()
+        st.subheader("🏆 Leaderboard")
+        name = st.text_input("Apna Naam likhein:")
+        if st.button("Score Save Karein"):
+            if name:
+                # CSV file mein score save karna
+                with open("scores.csv", "a") as f:
+                    f.write(f"{name},{st.session_state.score},{len(q_list)}\n")
+                st.success("Score save ho gaya! Page refresh karke check karein.")
+            else:
+                st.error("Pehle naam toh likho bhai!")
 
+        # Leaderboard Table dikhana
+        try:
+            import pandas as pd
+            # Agar file nahi hai toh ye error dega, isliye try/except lagaya hai
+            data = pd.read_csv("scores.csv", names=["Naam", "Score", "Total"])
+            # Top 5 scorers dikhayenge
+            data = data.sort_values(by="Score", ascending=False).head(5)
+            st.table(data)
+        except:
+            st.info("Abhi tak koi topper nahi hai. Pehle bano!")
+            
         if st.button("Main Menu par wapas jayein"):
             st.session_state.quiz_started = False
             st.session_state.quiz_data = []
