@@ -629,7 +629,8 @@ if st.session_state.quiz_data:
         
     st.session_state.current_q += 1
     st.rerun()
-        else:
+    
+    else:
         st.balloons()
         # Yahan humne st.session_state.quiz_data use kiya hai taaki error na aaye
         total_questions = len(st.session_state.quiz_data)
