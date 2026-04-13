@@ -11,7 +11,7 @@ if 'db' not in st.session_state:
     ["Physics", "Unit 1: Wave Motion", "SHM ka displacement equation kya hai?", "y = a sin wt", "y = mc2,y = a sin wt,v = u + at,F = ma"],
     ["Physics", "Unit 1: Wave Motion", "Ultrasonic waves ki frequency kitni hoti hai?", "> 20,000 Hz", "< 20 Hz,20-20,000 Hz,> 20,000 Hz,None"],
     ["Physics", "Unit 1: Wave Motion", "Sound waves kaisa wave motion dikhati hain?", "Longitudinal", "Transverse,Longitudinal,Electromagnetic,None"],
-    ["Physics"[\"Physics\", \"Unit 1: Wave Motion\", \"Wave velocity (v), frequency (n) aur wavelength (L) ka rishta?\", \"v = nL\", \"v = n/L,v = L/n,v = nL,None\"],, "Unit 1: Wave Motion", "Wave velocity (v), frequency (n) aur wavelength (L) ka rishta?", "v = nL", "v = n/L,v = L/n,v = nL,None"],
+    ["Physics", "Unit 1: Wave Motion", "Wave velocity (v), frequency (n) aur wavelength (L) ka rishta?", "v = nL", "v = n/L,v = L/n,v = nL,None"],
     ["Physics", "Unit 1: Wave Motion", "SHM mein acceleration kiske proportional hota hai?", "- Displacement", "- Velocity,- Displacement,Mass,Time"],
     ["Physics", "Unit 1: Wave Motion", "Ek complete vibration mein laga samay?", "Time Period", "Frequency,Time Period,Wavelength,Phase"],
     ["Physics", "Unit 1: Wave Motion", "Frequency ki unit kya hai?", "Hertz", "Watt,Hertz,Joule,Newton"],
