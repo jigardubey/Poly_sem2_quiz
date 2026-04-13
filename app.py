@@ -613,28 +613,7 @@ else:
     q_list = st.session_state.quiz_data
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
-                # --- SIDEBAR TIMER ---
-        with st.sidebar:
-            st.header("⏲️ Quiz Timer")
-            # Naya timer start karna agar pehle se nahi hai
-            if 'start_time' not in st.session_state:
-                st.session_state.start_time = time.time()
-            
-            limit = 30  # 30 seconds ka time
-            elapsed = time.time() - st.session_state.start_time
-            remaining = max(0, int(limit - elapsed))
-            
-            if remaining > 0:
-                st.metric("Time Left", f"{remaining}s")
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error("⏰ Time's Up!")
-                # Timer reset aur agle sawal par skip
-                if 'start_time' in st.session_state: 
-                    del st.session_state.start_time
-                st.session_state.current_q += 1
-                st.rerun()
+                
                 
         # Sawal number aur progress bar
         st.write(f"**Sawal {st.session_state.current_q + 1} of {len(q_list)}**")
@@ -646,7 +625,23 @@ else:
         options_raw = curr[4].split(',')
         options = [opt.strip() for opt in options_raw if opt.strip()]
         user_ans = st.radio("Sahi option chuniye:", options, key=f"q_{st.session_state.current_q}")
-        
+                # --- SIMPLE TIMER ---
+        if 'start_time' not in st.session_state:
+            st.session_state.start_time = time.time()
+
+        limit = 30
+        elapsed = time.time() - st.session_state.start_time
+        remaining = max(0, int(limit - elapsed))
+
+        # Timer sirf text mein dikhayenge taaki screen freeze na ho
+        if remaining > 0:
+            st.write(f"⏱️ **Time Left: {remaining}s** (Submit karne se pehle refresh na karein)")
+        else:
+            st.error("⏰ Time's Up!")
+            if 'start_time' in st.session_state: del st.session_state.start_time
+            st.session_state.current_q += 1
+            st.rerun()
+            
         if st.button("Submit Answer"):
             if user_ans.strip() == curr[3].strip():
                 st.success("✅ **Sahi Jawab!**")
