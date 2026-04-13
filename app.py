@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import time
 
 # Page Configuration
 st.set_page_config(page_title="Polytechnic Quiz 2026", page_icon="🎓")
