@@ -629,8 +629,8 @@ if st.session_state.quiz_data:
         
     st.session_state.current_q += 1
     st.rerun()
-    
-    else:
+
+        else:
         st.balloons()
         st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(q_list)}")
         if st.button("Restart"):
