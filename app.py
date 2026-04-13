@@ -608,16 +608,21 @@ if st.session_state.quiz_data:
         options = curr[4].split(',')
         ans = st.radio("Sahi jawab chuniye:", options)
         
-        if st.button("Submit Answer"):
-            if ans == curr[3]:
-                st.success("✅ Sahi Jawab!")
-                st.session_state.score += 1
-            else:
-                st.error(f"❌ Galat! Sahi tha: {curr[3]}")
-            
-            st.session_state.current_q += 1
-            time.sleep(1) # Thoda gap
-            st.rerun()
+        if submit_btn:
+    if user_ans.strip() == curr[3].strip():
+        st.success(f"✅ Sahi Jawab! ({curr[3]})")
+        st.session_state.score += 1
+    else:
+        # Yahan hum bata rahe hain ki galat hai AUR sahi jawab kya hai
+        st.error(f"❌ Galat Jawab!")
+        st.info(f"💡 Sahi jawab ye tha: **{curr[3]}**")
+    
+    # Thoda ruko taaki banda sahi jawab padh sake (2-3 seconds)
+    time.sleep(2) 
+    
+    st.session_state.current_q += 1
+    st.rerun()
+    
     else:
         st.balloons()
         st.write(f"## 🎉 Quiz Khatam! Tera Score: {st.session_state.score}/{len(q_list)}")
