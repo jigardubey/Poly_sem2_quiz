@@ -577,9 +577,10 @@ if 'db' not in st.session_state:
 ["Environmental", "Unit 3", "Pellets kisse bante hain?", "Biomass", "Coal,Biomass,Iron,None"],
 ["Environmental", "Unit 4", "Green data book kiske liye hai?", "Environmental data", "Endangered species,Environmental data,Animals,None"]
     ]
-# --- SESSION STATE (App ki yaadgaar) ---
+# Session states initialize
 if 'score' not in st.session_state: st.session_state.score = 0
 if 'current_q' not in st.session_state: st.session_state.current_q = 0
+if 'quiz_started' not in st.session_state: st.session_state.quiz_started = False
 if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 
 # --- BRANDING ---
