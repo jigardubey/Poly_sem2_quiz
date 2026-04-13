@@ -588,17 +588,26 @@ st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
 
 if not st.session_state.quiz_started:
-    # Subject selection screen
-    subs = list(set([x[0] for x in st.session_state.db]))
-    selected_sub = st.selectbox("Apna Subject Chuniye:", subs)
+    # 1. Subject selection
+    subs = sorted(list(set([x[0] for x in st.session_state.db])))
+    selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
+    
+    # 2. Unit selection (Sirf us subject ki units dikhayega)
+    units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
+    selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
     
     if st.button("🚀 Start Quiz"):
-        st.session_state.quiz_data = [x for x in st.session_state.db if x[0] == selected_sub]
+        # Filter: Subject (Index 0) aur Unit (Index 1) dono check honge
+        st.session_state.quiz_data = [
+            x for x in st.session_state.db 
+            if x[0] == selected_sub and x[1] == selected_unit
+        ]
         random.shuffle(st.session_state.quiz_data)
         st.session_state.score = 0
         st.session_state.current_q = 0
         st.session_state.quiz_started = True
         st.rerun()
+        
 else:
     # Quiz Logic
     q_list = st.session_state.quiz_data
