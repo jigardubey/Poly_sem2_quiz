@@ -623,4 +623,15 @@ if st.session_state.quiz_data:
         if st.button("Restart"):
             st.session_state.quiz_data = []
             st.rerun()
-          
+          # Code ke sabse last mein ye dalo
+st.markdown("---")
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <p>© 2026 <b>Jigar Dubey</b> | All Rights Reserved</p>
+        <p>Created for Polytechnic Exam Preparation</p>
+    </div>
+    """, 
+    unsafe_allow_stdio=True
+)
+
