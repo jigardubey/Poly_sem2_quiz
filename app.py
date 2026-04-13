@@ -613,7 +613,29 @@ else:
     q_list = st.session_state.quiz_data
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
-        
+                # --- SIDEBAR TIMER ---
+        with st.sidebar:
+            st.header("⏲️ Quiz Timer")
+            # Naya timer start karna agar pehle se nahi hai
+            if 'start_time' not in st.session_state:
+                st.session_state.start_time = time.time()
+            
+            limit = 30  # 30 seconds ka time
+            elapsed = time.time() - st.session_state.start_time
+            remaining = max(0, int(limit - elapsed))
+            
+            if remaining > 0:
+                st.metric("Time Left", f"{remaining}s")
+                time.sleep(1)
+                st.rerun()
+            else:
+                st.error("⏰ Time's Up!")
+                # Timer reset aur agle sawal par skip
+                if 'start_time' in st.session_state: 
+                    del st.session_state.start_time
+                st.session_state.current_q += 1
+                st.rerun()
+                
         # Sawal number aur progress bar
         st.write(f"**Sawal {st.session_state.current_q + 1} of {len(q_list)}**")
         st.progress((st.session_state.current_q + 1) / len(q_list))
@@ -636,6 +658,9 @@ else:
             
             # 2 second rukega taaki banda result dekh sake
             time.sleep(2)
+            if 'start_time' in st.session_state: 
+    del st.session_state.start_time
+ 
             st.session_state.current_q += 1
             st.rerun()
     else:
