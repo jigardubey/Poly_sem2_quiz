@@ -658,9 +658,8 @@ else:
             
             # 2 second rukega taaki banda result dekh sake
             time.sleep(2)
-            if 'start_time' in st.session_state: 
-    del st.session_state.start_time
- 
+            if 'start_time' in st.session_state: del st.session_state.start_time
+                
             st.session_state.current_q += 1
             st.rerun()
     else:
