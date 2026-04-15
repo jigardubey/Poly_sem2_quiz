@@ -614,13 +614,10 @@ if not st.session_state.quiz_started:
                 st.session_state.quiz_started = True
                 if 'score_saved' in st.session_state: del st.session_state.score_saved
                 st.rerun()
-else:
-        # Yahan se Quiz Logic shuru hoga (Purana wala)
 
-        
-else:
-    # Quiz Logic
-    q_list = st.session_state.quiz_data
+    else:
+        # Quiz Logic (Yahan se seedha q_list shuru hona chahiye)
+        q_list = st.session_state.quiz_data
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
                 
