@@ -586,48 +586,38 @@ if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 # --- BRANDING ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
-if not st.session_state.quiz_started:
-    # --- Pehle Naam Pucho ---
-    user_name = st.text_input("👤 Apna Poora Naam Likhein (Leaderboard ke liye):")
-    
-    # Subject selection logic (Purana wala)
-    subs = sorted(list(set([x[0] for x in st.session_state.db])))
-    selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
-    
-    units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
-    selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
-    
-    if st.button("🚀 Start Quiz"):
-        if user_name.strip() == "":
-            st.error("Bhai, bina naam ke entry nahi milegi!")
-        else:
-            st.session_state.user_name = user_name # Naam save kar liya
-            # ... baki purana start quiz wala code ...
+    if not st.session_state.quiz_started:
+        # 1. User Name Input
+        user_name = st.text_input("👤 Apna Poora Naam Likhein:", key="user_name_input")
+        
+        # 2. Subject Selection
+        subs = sorted(list(set([x[0] for x in st.session_state.db])))
+        selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
+        
+        # 3. Unit Selection
+        units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
+        selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
+        
+        if st.button("🚀 Start Quiz"):
+            if user_name.strip() == "":
+                st.error("Bhai, bina naam ke entry nahi milegi!")
+            else:
+                # Setup session for the quiz
+                st.session_state.user_name = user_name
+                st.session_state.quiz_data = [
+                    x for x in st.session_state.db 
+                    if x[0] == selected_sub and x[1] == selected_unit
+                ]
+                random.shuffle(st.session_state.quiz_data)
+                st.session_state.score = 0
+                st.session_state.current_q = 0
+                st.session_state.quiz_started = True
+                if 'score_saved' in st.session_state: del st.session_state.score_saved
+                st.rerun()
 
-if not st.session_state.quiz_started:
-        user_name = st.text_input("👤 Apna Naam Likhein:", key="user_name_input")
-    
-    # 1. Subject selection
-    subs = sorted(list(set([x[0] for x in st.session_state.db])))
-    selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
-    
-    # 2. Unit selection (Sirf us subject ki units dikhayega)
-    units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
-    selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
-    
-        if st.button("🚀 Start Quiz") and user_name:
-        st.session_state.user_name = user_name # Naam save kar liya
-            
-        # Filter: Subject (Index 0) aur Unit (Index 1) dono check honge
-        st.session_state.quiz_data = [
-            x for x in st.session_state.db 
-            if x[0] == selected_sub and x[1] == selected_unit
-        ]
-        random.shuffle(st.session_state.quiz_data)
-        st.session_state.score = 0
-        st.session_state.current_q = 0
-        st.session_state.quiz_started = True
-        st.rerun()
+    else:
+        # Yahan se Quiz Logic shuru hoga (Purana wala)
+
         
 else:
     # Quiz Logic
