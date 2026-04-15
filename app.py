@@ -586,7 +586,7 @@ if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 # --- BRANDING ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
-    if not st.session_state.quiz_started:
+if not st.session_state.quiz_started:
         # 1. User Name Input
         user_name = st.text_input("👤 Apna Poora Naam Likhein:", key="user_name_input")
         
