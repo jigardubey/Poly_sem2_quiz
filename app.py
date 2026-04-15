@@ -577,7 +577,7 @@ if 'db' not in st.session_state:
 ["Environmental", "Unit 3", "Pellets kisse bante hain?", "Biomass", "Coal,Biomass,Iron,None"],
 ["Environmental", "Unit 4", "Green data book kiske liye hai?", "Environmental data", "Endangered species,Environmental data,Animals,None"]
     ]
-# Session states initialize
+# --- Session states initialize (Line 580) ---
 if 'score' not in st.session_state: st.session_state.score = 0
 if 'current_q' not in st.session_state: st.session_state.current_q = 0
 if 'quiz_started' not in st.session_state: st.session_state.quiz_started = False
@@ -586,23 +586,24 @@ if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 # --- BRANDING ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
+
 if not st.session_state.quiz_started:
-        # 1. User Name Input
-        user_name = st.text_input("👤 Apna Poora Naam Likhein:", key="user_name_input")
-        
-        # 2. Subject Selection
-        subs = sorted(list(set([x[0] for x in st.session_state.db])))
-        selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
-        
-        # 3. Unit Selection
-        units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
-        selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
-        
-            if st.button("🚀 Start Quiz"):
+    # 1. User Name Input (Quiz shuru hone se pehle)
+    user_name = st.text_input("👤 Apna Poora Naam Likhein:", key="user_name_input")
+    
+    # 2. Subject Selection
+    subs = sorted(list(set([x[0] for x in st.session_state.db])))
+    selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
+    
+    # 3. Unit Selection
+    units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
+    selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
+    
+    if st.button("🚀 Start Quiz"):
         if user_name.strip() == "":
             st.error("Bhai, bina naam ke entry nahi milegi!")
         else:
-            # Setup session for the quiz
+            # Setup session
             st.session_state.user_name = user_name
             st.session_state.quiz_data = [
                 x for x in st.session_state.db 
@@ -621,20 +622,19 @@ else:
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
 
-        # Sawal number aur progress bar
         st.write(f"***Sawal {st.session_state.current_q + 1} of {len(q_list)}***")
         st.progress((st.session_state.current_q + 1) / len(q_list))
-        st.info(curr[2]) # Sawal dikhana
+        st.info(curr[2]) # Question text
 
         # Options logic
         options_raw = curr[4].split(',')
         options = [opt.strip() for opt in options_raw if opt.strip()]
         user_ans = st.radio("Sahi option chuniye:", options, key=f"q_{st.session_state.current_q}")
 
-        # --- SIMPLE TIMER ---
+        # --- TIMER LOGIC ---
         if 'start_time' not in st.session_state:
             st.session_state.start_time = time.time()
-
+        
         limit = 30
         elapsed = time.time() - st.session_state.start_time
         remaining = max(0, int(limit - elapsed))
@@ -655,55 +655,40 @@ else:
             else:
                 st.error("❌ **Galat Jawab!**")
                 st.info(f"💡 Sahi uttar tha: **{curr[3]}**")
-
+            
             time.sleep(2)
             if 'start_time' in st.session_state: del st.session_state.start_time
             st.session_state.current_q += 1
             st.rerun()
-
-        # Result Screen
+            
+    else:
+        # --- Result Screen & Cumulative Leaderboard ---
         st.balloons()
         st.header(f"🏁 Quiz Result: {st.session_state.score}/{len(q_list)}")
-        
-        # Performance message based on score
-        if st.session_state.score == len(q_list):
-            st.success("Kya baat hai! Tum toh genius ho! 🏆")
-        elif st.session_state.score > len(q_list) / 2:
-            st.info("Bohot badhiya! Thodi aur mehnat karo. 💪")
-        else:
-            st.warning("Koi baat nahi, dobara koshish karo! 📚")
-        # --- LEADERBOARD ---
-        st.divider()
-        st.subheader("🏆 Leaderboard")
-       
-            if name:
-                # CSV file mein score save karna
-                with open("scores.csv", "a") as f:
-                    f.write(f"{name},{st.session_state.score},{len(q_list)}\n")
-                st.success("Score save ho gaya! Page refresh karke check karein.")
-            else:
-                st.error("Pehle naam toh likho bhai!")
 
-        # Leaderboard Table dikhana
+        # Automatic score saving (No button needed)
+        if 'score_saved' not in st.session_state:
+            with open("scores.csv", "a") as f:
+                f.write(f"{st.session_state.user_name},{st.session_state.score},{len(q_list)}\n")
+            st.session_state.score_saved = True
+
+        st.divider()
+        st.subheader("🏆 Overall Toppers (All Units Total)")
+        
         try:
-                        # Purana data load karo
-            data = pd.read_csv("scores.csv", names=["Naam", "Score", "Total"])
+            import pandas as pd
+            df = pd.read_csv("scores.csv", names=["Naam", "Score", "Total"])
             
-            # --- AGGREGATION LOGIC (Sab jod do) ---
-            # Har bande ke naam ke hisab se Score aur Total ko plus (+) karega
-            leaderboard = data.groupby("Naam").sum().reset_index()
-            
-            # Highest total marks wale ko top par dikhao
+            # Grouping scores to sum them up for each user
+            leaderboard = df.groupby("Naam").sum().reset_index()
             leaderboard = leaderboard.sort_values(by="Score", ascending=False).head(10)
             
-            # Rank dikhane ke liye (1, 2, 3...)
+            # Rank setting
             leaderboard.index = leaderboard.index + 1
             st.table(leaderboard)
-            
-            st.table(data)
         except:
-            st.info("Abhi tak koi topper nahi hai. Pehle bano!")
-            
+            st.info("Abhi data record ho raha hai... Pehla score bano!")
+
         if st.button("Main Menu par wapas jayein"):
             st.session_state.quiz_started = False
             st.session_state.quiz_data = []
