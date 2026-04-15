@@ -586,8 +586,27 @@ if 'quiz_data' not in st.session_state: st.session_state.quiz_data = []
 # --- BRANDING ---
 st.title("🎓 Polytechnic Exam Quiz 2026")
 st.caption("Created by: Jigar Dubey")
+if not st.session_state.quiz_started:
+    # --- Pehle Naam Pucho ---
+    user_name = st.text_input("👤 Apna Poora Naam Likhein (Leaderboard ke liye):")
+    
+    # Subject selection logic (Purana wala)
+    subs = sorted(list(set([x[0] for x in st.session_state.db])))
+    selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
+    
+    units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
+    selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
+    
+    if st.button("🚀 Start Quiz"):
+        if user_name.strip() == "":
+            st.error("Bhai, bina naam ke entry nahi milegi!")
+        else:
+            st.session_state.user_name = user_name # Naam save kar liya
+            # ... baki purana start quiz wala code ...
 
 if not st.session_state.quiz_started:
+        user_name = st.text_input("👤 Apna Naam Likhein:", key="user_name_input")
+    
     # 1. Subject selection
     subs = sorted(list(set([x[0] for x in st.session_state.db])))
     selected_sub = st.selectbox("📚 Apna Subject Chuniye:", subs)
@@ -596,7 +615,9 @@ if not st.session_state.quiz_started:
     units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
     selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
     
-    if st.button("🚀 Start Quiz"):
+        if st.button("🚀 Start Quiz") and user_name:
+        st.session_state.user_name = user_name # Naam save kar liya
+            
         # Filter: Subject (Index 0) aur Unit (Index 1) dono check honge
         st.session_state.quiz_data = [
             x for x in st.session_state.db 
@@ -672,8 +693,7 @@ else:
         # --- LEADERBOARD ---
         st.divider()
         st.subheader("🏆 Leaderboard")
-        name = st.text_input("Apna Naam likhein:")
-        if st.button("Score Save Karein"):
+       
             if name:
                 # CSV file mein score save karna
                 with open("scores.csv", "a") as f:
@@ -684,11 +704,20 @@ else:
 
         # Leaderboard Table dikhana
         try:
-            import pandas as pd
-            # Agar file nahi hai toh ye error dega, isliye try/except lagaya hai
+                        # Purana data load karo
             data = pd.read_csv("scores.csv", names=["Naam", "Score", "Total"])
-            # Top 5 scorers dikhayenge
-            data = data.sort_values(by="Score", ascending=False).head(5)
+            
+            # --- AGGREGATION LOGIC (Sab jod do) ---
+            # Har bande ke naam ke hisab se Score aur Total ko plus (+) karega
+            leaderboard = data.groupby("Naam").sum().reset_index()
+            
+            # Highest total marks wale ko top par dikhao
+            leaderboard = leaderboard.sort_values(by="Score", ascending=False).head(10)
+            
+            # Rank dikhane ke liye (1, 2, 3...)
+            leaderboard.index = leaderboard.index + 1
+            st.table(leaderboard)
+            
             st.table(data)
         except:
             st.info("Abhi tak koi topper nahi hai. Pehle bano!")
