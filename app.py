@@ -598,40 +598,40 @@ if not st.session_state.quiz_started:
         units = sorted(list(set([x[1] for x in st.session_state.db if x[0] == selected_sub])))
         selected_unit = st.selectbox("📖 Ab Unit (Chapter) Chuniye:", units)
         
-        if st.button("🚀 Start Quiz"):
-            if user_name.strip() == "":
-                st.error("Bhai, bina naam ke entry nahi milegi!")
-            else:
-                # Setup session for the quiz
-                st.session_state.user_name = user_name
-                st.session_state.quiz_data = [
-                    x for x in st.session_state.db 
-                    if x[0] == selected_sub and x[1] == selected_unit
-                ]
-                random.shuffle(st.session_state.quiz_data)
-                st.session_state.score = 0
-                st.session_state.current_q = 0
-                st.session_state.quiz_started = True
-                if 'score_saved' in st.session_state: del st.session_state.score_saved
-                st.rerun()
+            if st.button("🚀 Start Quiz"):
+        if user_name.strip() == "":
+            st.error("Bhai, bina naam ke entry nahi milegi!")
         else:
-        # Quiz Logic (Yahan se seedha q_list shuru hona chahiye)
-        q_list = st.session_state.quiz_data
+            # Setup session for the quiz
+            st.session_state.user_name = user_name
+            st.session_state.quiz_data = [
+                x for x in st.session_state.db 
+                if x[0] == selected_sub and x[1] == selected_unit
+            ]
+            random.shuffle(st.session_state.quiz_data)
+            st.session_state.score = 0
+            st.session_state.current_q = 0
+            st.session_state.quiz_started = True
+            if 'score_saved' in st.session_state: del st.session_state.score_saved
+            st.rerun()
+
+else:
+    # --- Quiz Logic (Running Mode) ---
+    q_list = st.session_state.quiz_data
     if st.session_state.current_q < len(q_list):
         curr = q_list[st.session_state.current_q]
-                
-                
+
         # Sawal number aur progress bar
-        st.write(f"**Sawal {st.session_state.current_q + 1} of {len(q_list)}**")
+        st.write(f"***Sawal {st.session_state.current_q + 1} of {len(q_list)}***")
         st.progress((st.session_state.current_q + 1) / len(q_list))
-        
         st.info(curr[2]) # Sawal dikhana
-        
-        # Options ko saaf karke dikhana
+
+        # Options logic
         options_raw = curr[4].split(',')
         options = [opt.strip() for opt in options_raw if opt.strip()]
         user_ans = st.radio("Sahi option chuniye:", options, key=f"q_{st.session_state.current_q}")
-                # --- SIMPLE TIMER ---
+
+        # --- SIMPLE TIMER ---
         if 'start_time' not in st.session_state:
             st.session_state.start_time = time.time()
 
@@ -639,31 +639,28 @@ if not st.session_state.quiz_started:
         elapsed = time.time() - st.session_state.start_time
         remaining = max(0, int(limit - elapsed))
 
-        # Timer sirf text mein dikhayenge taaki screen freeze na ho
         if remaining > 0:
-            st.write(f"⏱️ **Time Left: {remaining}s** (Submit karne se pehle refresh na karein)")
+            st.write(f"⏱️ **Time Left: {remaining}s**")
         else:
             st.error("⏰ Time's Up!")
             if 'start_time' in st.session_state: del st.session_state.start_time
             st.session_state.current_q += 1
             st.rerun()
-            
+
         if st.button("Submit Answer"):
             if user_ans.strip() == curr[3].strip():
                 st.success("✅ **Sahi Jawab!**")
-                st.balloons() # Sahi hone par celebration
+                st.balloons()
                 st.session_state.score += 1
             else:
                 st.error("❌ **Galat Jawab!**")
-                st.info(f"💡 Sahi uttar tha: **{curr[3]}**") # Galat hone par sahi jawab batana
-            
-            # 2 second rukega taaki banda result dekh sake
+                st.info(f"💡 Sahi uttar tha: **{curr[3]}**")
+
             time.sleep(2)
             if 'start_time' in st.session_state: del st.session_state.start_time
-                
             st.session_state.current_q += 1
             st.rerun()
-    else:
+
         # Result Screen
         st.balloons()
         st.header(f"🏁 Quiz Result: {st.session_state.score}/{len(q_list)}")
