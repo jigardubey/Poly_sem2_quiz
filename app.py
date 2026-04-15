@@ -614,8 +614,7 @@ if not st.session_state.quiz_started:
                 st.session_state.quiz_started = True
                 if 'score_saved' in st.session_state: del st.session_state.score_saved
                 st.rerun()
-
-    else:
+else:
         # Yahan se Quiz Logic shuru hoga (Purana wala)
 
         
