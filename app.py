@@ -625,7 +625,7 @@ if 'db' not in st.session_state:
     ["IT System", "Unit 4: Net", "NIC ka full form?", "Network Interface Card", "Network Internal Card,Network Interface Card,New Info Card,None"],
     ["IT System", "Unit 5: Sec", "Firewall kahan lagaya ja sakta hai?", "Hardware & Software both", "Only Hardware,Only Software,Hardware & Software both,None"],
     ["IT System", "Unit 3: Word", "Portrait aur Landscape kya hain?", "Page Orientation", "Page Size,Page Orientation,Margin,None"],
-    ["IT System", "Unit 1: Basic", "OCR ka full form?", "Optical Character Recognition", "Optical Character Recognition,Original Code Reader,Open Card Reader,None"]
+    ["IT System", "Unit 1: Basic", "OCR ka full form?", "Optical Character Recognition", "Optical Character Recognition,Original Code Reader,Open Card Reader,None"],
         ["IT System", "Unit 1: Hardware", "HDD aur SSD mein se zyada purani technology kaunsi hai?", "HDD", "HDD,SSD,NVMe,None"],
     ["IT System", "Unit 1: Basic", "Computer system mein 'Registers' kahan hote hain?", "Inside CPU", "Inside RAM,Inside CPU,In Hard Disk,In ROM"],
     ["IT System", "Unit 1: Hardware", "External Hard Disk connect karne ke liye kis port ka use hota hai?", "USB Port", "VGA Port,PS/2 Port,USB Port,Ethernet Port"],
@@ -725,7 +725,7 @@ if 'db' not in st.session_state:
     ["ENV", "Unit 3: Energy", "Wind mill kya convert karti hai?", "Kinetic to Electrical", "Heat to Light,Kinetic to Electrical,Solar to Heat,None"],
     ["ENV", "Unit 2: Pollution", "Soil Erosion kaise roka ja sakta hai?", "Afforestation", "Deforestation,Afforestation,Overgrazing,None"],
     ["ENV", "Unit 4: Biodiversity", "Gym Corbett National Park kahan hai?", "Uttarakhand", "UP,Uttarakhand,MP,Bihar"],
-    ["ENV", "Unit 5: Rules", "Kyoto Protocol kiske liye tha?", "Global Warming", "Ozone,Global Warming,Water,Noise"]
+    ["ENV", "Unit 5: Rules", "Kyoto Protocol kiske liye tha?", "Global Warming", "Ozone,Global Warming,Water,Noise"],
         ["ENV", "Unit 2: Pollution", "Incineration kya hai?", "Waste burning at high temperature", "Waste dumping,Waste burning at high temperature,Recycling,Planting"],
     ["ENV", "Unit 2: Pollution", "Composting kiske liye best hai?", "Biodegradable waste", "Plastic,Glass,Biodegradable waste,Metal"],
     ["ENV", "Unit 2: Pollution", "Solid waste management mein 3R kya hai?", "Reduce, Reuse, Recycle", "Read, Run, Recycle,Reduce, Reuse, Recycle,Remove, Repair, Reuse,None"],
