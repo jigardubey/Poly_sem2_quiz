@@ -675,7 +675,7 @@ if 'db' not in st.session_state:
     ["IT System", "Unit 4: Net", "Wireless network ki security?", "WPA/WEP", "HTTP,WPA/WEP,FTP,None"],
     ["IT System", "Unit 5: Sec", "Ethical Hacking ka dusra naam?", "White Hat Hacking", "Black Hat,White Hat Hacking,Grey Hat,None"],
     ["IT System", "Unit 1: Hardware", "Dual core processor mein kitne core hote hain?", "2", "1,2,4,8"],
-    ["IT System", "Unit 4: Net", "Modem ki speed maapi jati hai?", "Kbps/Mbps", "Hz,Kbps/Mbps,Watts,Volts"]
+    ["IT System", "Unit 4: Net", "Modem ki speed maapi jati hai?", "Kbps/Mbps", "Hz,Kbps/Mbps,Watts,Volts"],
        ["ENV", "Unit 1: Ecosystem", "Ecosystem shabd sabse pehle kisne diya?", "A.G. Tansley", "Charles Darwin,A.G. Tansley,Lamarck,Newton"],
     ["ENV", "Unit 1: Ecosystem", "Ecosystem ke biological components kya hain?", "Producers, Consumers & Decomposers", "Sunlight,Producers, Consumers & Decomposers,Soil,Water"],
     ["ENV", "Unit 1: Ecosystem", "Poudhe (Plants) kaisa role play karte hain?", "Producers", "Producers,Consumers,Decomposers,None"],
